@@ -16,7 +16,8 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(optional=false)
+    @JoinColumn(name = "question_id",nullable = false)
     @ToString.Exclude
     private QuestionEntity question;
 

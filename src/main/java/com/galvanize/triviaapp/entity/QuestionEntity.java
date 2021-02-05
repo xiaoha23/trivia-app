@@ -26,8 +26,8 @@ public class QuestionEntity {
     private Integer questionNumber;
     private String question;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<AnswerEntity> answer;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    private List<AnswerEntity> answers;
     @CreatedDate
     private Date createdAt;
 }

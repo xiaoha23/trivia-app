@@ -1,8 +1,9 @@
 package com.galvanize.triviaapp.controller;
 
-import com.galvanize.triviaapp.entity.AnswerEntity;
-import com.galvanize.triviaapp.entity.QuestionEntity;
-import com.galvanize.triviaapp.repository.QuestionRepository;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,11 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@SpringBootTest(properties = "application-test.properties")
+@SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 public class TriviaControllerIT {
@@ -22,47 +19,22 @@ public class TriviaControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private QuestionRepository questionRepository;
-
-
-
-    @Test
-    public void getAllQuestions_returnEmptyList_whenNoQuestionFound() throws Exception {
-        questionRepository.deleteAll();
-        mockMvc.perform(get("/questions"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.questions.length()").value(0));
-    }
 
     @Test
     public void getAllQuestions_returnQuestionDetails() throws Exception {
-//        prepareData();
         mockMvc.perform(get("/questions"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.questions.length()").value(2));
+                .andExpect(jsonPath("$.questions.length()").value(2))
+                .andExpect(jsonPath("$.questions[0].id").exists())
+                .andExpect(jsonPath("$.questions[0].createdAt").exists())
+                .andExpect(jsonPath("$.questions[0].question").exists())
+                .andExpect(jsonPath("$.questions[0].answers").exists())
+                .andExpect(jsonPath("$.questions[0].questionNumber").exists())
+                .andExpect(jsonPath("$.questions[0].quizId").exists())
+                .andExpect(jsonPath("$.questions[0].answers.length()").value(3))
+                .andExpect(jsonPath("$.questions[0].answers[0].text").exists())
+                .andExpect(jsonPath("$.questions[0].answers[0].correct").exists())
+                .andExpect(jsonPath("$.questions[0].answers[0].choice").exists());
 
     }
-
-//    private void prepareData() {
-//        AnswerEntity ans1 = AnswerEntity.builder()
-//                .id(1)
-//                .choice("A")
-//                .correct(true)
-//                .text("answer 1")
-//                .build();
-//
-//        AnswerEntity ans2 = AnswerEntity.builder()
-//                .id(2)
-//                .choice("B")
-//                .correct(false)
-//                .text("answer 2")
-//                .build();
-//
-//        QuestionEntity questionEntity = QuestionEntity.builder()
-//                .id(1)
-//                .quizId(1)
-//                .question("Question 1")
-//                .questionNumber(2)
-//    }
 }
