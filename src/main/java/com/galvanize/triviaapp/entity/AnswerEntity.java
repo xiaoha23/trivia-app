@@ -4,6 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "answer")
 @Data
@@ -13,12 +18,13 @@ import javax.persistence.*;
 public class AnswerEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     @ManyToOne(optional=false)
-    @JoinColumn(name = "question_id",nullable = false)
     @ToString.Exclude
+    @JsonIgnore
+    @RestResource(exported = false)
     private QuestionEntity question;
 
     private String choice;

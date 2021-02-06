@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/questions")
 @AllArgsConstructor
 public class TriviaController {
 
     private TriviaService triviaService;
 
 
-    @GetMapping
-    public TriviaResponseDTO getAllQuestions() {
-        return triviaService.getAllQuestions();
+    @GetMapping("/quiz")
+    public TriviaResponseDTO getAllQuestionsForRandomQuiz() {
+        return triviaService.getAllQuestionsForRandomQuiz();
     }
 }

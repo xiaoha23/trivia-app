@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mysql-server-dev:
+    image: mysql
+    volumes:
+      - db-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: notsecure
+      MYSQL_DATABASE: trivia_dev
+  trivia-app:
+    build: .
+    environment:
+      DB_HOST: mysql-server-dev
+      DB_USER: root
+      DB_PASSWORD: notsecure
+      DB_NAME: trivia_dev
+    depends_on:
+      - mysql-server-dev
+    ports:
+      - "8080:8080"
+volumes:
+  db-volume: {}
